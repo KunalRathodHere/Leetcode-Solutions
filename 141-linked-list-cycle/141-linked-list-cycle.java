@@ -10,34 +10,21 @@
  * }
  */
 public class Solution {
-    public boolean hasCycle(ListNode head) {
-        
-//         if(head == null || head.next == null)
-//             return false;
-//         if(head.next == head)
-//             return true;
-        
-//         if(head.next.next == null)
-//             return false;
-        if(head == null || head.next == null)
-            return false;
-        
-        ListNode slow = head;
-        ListNode fast = head;
-        
-        while( fast != null && fast.next != null && slow != null){
-            
-            
-            slow = slow.next;
-            fast = fast.next.next;
-            if(slow == fast)
+public boolean hasCycle(ListNode head) {
+        HashMap<ListNode, Integer> map = new HashMap<ListNode, Integer>();
+        var temp = head;
+        while(temp != null && temp.next != null)
+        {
+            if (map.get(temp) != null){
+                map.put(temp, map.get(temp) + 1);
+            } else {
+                map.put(temp, 0);
+            }
+            temp = temp.next;
+            if(map.get(temp) != null && map.get(temp) > 1) 
                 return true;
-            
         }
-        
         return false;
-        
-        
-        
-    }
+}
+    
 }
