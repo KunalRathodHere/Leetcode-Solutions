@@ -1,6 +1,8 @@
 class Solution {
     public boolean canConstruct(String ransomNote, String magazine) {
         
+        if(ransomNote.length() > magazine.length()) return false;
+        
         int[] arr = new int[27];
         Arrays.fill(arr, 0);
         
@@ -19,5 +21,6 @@ class Solution {
         }
         
         return true;
+
     }
 }
