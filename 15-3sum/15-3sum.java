@@ -34,18 +34,11 @@ class Solution {
             
             if(nums[i] + nums[j] == target){
                 
-                List<Integer> arr = new ArrayList<Integer>();
-                arr.add(-1*target);
-                arr.add(nums[i]);
-                arr.add(nums[j]);
-                
-                if(set.contains(arr))
-                {}
-                else{
-                    ans.add(arr);
-                    set.add(arr);
-                }
+                ans.add(Arrays.asList(-1*target, nums[i], nums[j]));
                 i++;
+                while(i<j && nums[i] == nums[i-1]){
+                    i++;
+                }
             }
             
             if(nums[i] + nums[j] < target) i++;
