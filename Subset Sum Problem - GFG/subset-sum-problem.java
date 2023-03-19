@@ -58,4 +58,10 @@ class Solution{
         return  dp[idx][target] = (function(idx -1, arr, target, dp) || function(idx -1, arr, target - arr[idx], dp));
         
     }
+    
+    // static Boolean isSubsetSum(int N, int arr[], int sum){
+        
+        
+        
+    // }
 }
