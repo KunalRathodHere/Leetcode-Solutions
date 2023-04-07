@@ -32,65 +32,46 @@ class GFG {
 // } Driver Code Ends
 
 
-class Node{
-    int curr;
-    int parent;
-    
-    Node(int c, int p){
-        curr = c;
-        parent = p;
-    }
-}
-
 class Solution {
     // Function to detect cycle in an undirected graph.
     public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
         // Code here
-        boolean[] visited = new boolean[V];
-        
-        Queue<Node> queue = new LinkedList<>();
-        
-        Arrays.fill(visited, false);
-        
-        
-        for(int i =0; i<adj.size(); i++){
-            
-            if(visited[i] == false){
-                queue.add(new Node(i, -1));
-                visited[i] = true;
-                boolean ans = detect(V, adj, visited, queue);
-                if(ans) return true;
+        int[] vis = new int[V];
+        Arrays.fill(vis, 0);
+        for(int i =0; i<V; i++){
+            if(vis[i] == 0){
+                // System.out.println("location 2");
+                if(detect(i, -1, vis, adj) == true){ 
+                    return true;
+                }
             }
-            
         }
         return false;
+        
     }
     
-    public boolean detect(int V, ArrayList<ArrayList<Integer>> adj, boolean[] visited, Queue<Node> queue){
+    public boolean detect(int node, int parent, int vis[], ArrayList<ArrayList<Integer>> adj )
+    {
         
-        while(!queue.isEmpty()){
+        vis[node] = 1;
+        
+        for(int next: adj.get(node)){
             
-            Node curr_node = queue.remove();
-            int curr = curr_node.curr;
-            
-            for(int i =0; i<adj.get(curr).size(); i++){
-                
-                int next = adj.get(curr).get(i);
-                
-                if(visited[next] == true && next != curr_node.parent){
+            if(vis[next] == 0){
+                if(detect(next, node, vis, adj)){
+                    // System.out.println("location 1 " + next + " " + parent);
                     return true;
-                } else if(!visited[next] ){
-                    visited[next] = true;
-                    queue.add(new Node(next, curr));
-                    
                 }
                 
             }
+            else{
+                if(next != parent) return true;
+            }
             
         }
-         
+        
         return false;
-
-    }
-    
+        
+        
+    }    
 }
