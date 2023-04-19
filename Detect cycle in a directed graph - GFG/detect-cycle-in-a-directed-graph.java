@@ -36,41 +36,47 @@ class Solution {
     public boolean isCyclic(int V, ArrayList<ArrayList<Integer>> adj) {
         // code here
         
-        boolean visited[] = new boolean[V+1];
-        boolean path_visited[] = new boolean[V+1];
+        int[] vis = new int[V];
+        Arrays.fill(vis, -1);
         
-        for(int i =0; i<V;i++){
-            if( dfs(i, adj, visited, path_visited) )
-                return true;
+        int[] path_vis = new int[V];
+        Arrays.fill(path_vis, -1);
+        
+        for(int i =0; i<V; i++){
+            if(vis[i] == -1){
+                if( dfs(i, adj, vis, path_vis) == true){
+                    return true;
+                }
                 
+            }
         }
         
         return false;
         
     }
     
-    public boolean dfs(int V, ArrayList<ArrayList<Integer>> adj, boolean[] visited, boolean[] path_visited ){
+    public boolean dfs(int V, ArrayList<ArrayList<Integer>> adj, int[] vis, int[] path_vis){
         
-            if(path_visited[V] == true)
-            return true;
+        ArrayList<Integer> adj_arr = adj.get(V);
+        vis[V] = 1;
+        path_vis[V] = 1;
+        
+        for(int i =0; i<adj_arr.size(); i++){
             
-            if(visited[V] == true)
-            return false;
-            
-            visited[V]  = true;
-            path_visited[V] = true;
-            
-            ArrayList<Integer> arr = adj.get(V);
-            
-            for(int i : arr){
-                
-                if(dfs(i, adj, visited, path_visited))
+            if(vis[adj_arr.get(i)] == -1){
+                if(dfs(adj_arr.get(i), adj, vis, path_vis) == true){
                     return true;
-                
+                }
+            }
+            else if(path_vis[adj_arr.get(i)] == 1){
+                // System.out.println("vis " + V + " adj " + adj_arr.get(i));
+                return true;
             }
             
-            path_visited[V] = false;
-            
-            return false;
+        }
+        
+        path_vis[V] = -1;
+        return false;
+        
     }
 }
