@@ -54,13 +54,14 @@ class DriverClass
 
 //User function Template for Java
 
+
 class Pair{
-    int dist;
-    int node;
+    int first;
+    int second;
     
-    Pair(int d, int n){
-        dist = d;
-        node = n;
+    Pair(int f, int s){
+        first= f;
+        second = s;
     }
 }
 
@@ -72,38 +73,44 @@ class Solution
     {
         // Write your code here
         
-        PriorityQueue<Pair> pq = new PriorityQueue<Pair>((x,y) -> x.dist - y.dist);
-        
-        int[] dist = new int[V];
-        
+        int n = adj.size();
+        int[] dist = new int[n];
         Arrays.fill(dist, (int) 1e9);
         
+        PriorityQueue<Pair> pq = new PriorityQueue<Pair>((x,y) -> x.second - y.second);
         
-        dist[S] =  0;
-        pq.add(new Pair(0, S));
+        dist[S] = 0;
+        
+        pq.add(new Pair(S, 0));
         
         while(!pq.isEmpty()){
             
-            Pair a = pq.remove();
-            int dis = a.dist;
-            int node = a.node;
+            Pair curr = pq.remove();
             
-            for(int i =0; i<adj.get(node).size(); i++){
+            for(int i =0; i<adj.get(curr.first).size(); i++){
                 
-                int edgeWeight = adj.get(node).get(i).get(1);
-                int adjNode = adj.get(node).get(i).get(0);
+                ArrayList<Integer> adj_ele = adj.get(curr.first).get(i);
                 
-                if(dis + edgeWeight < dist[adjNode]){
-                    dist[adjNode] = dis + edgeWeight;
-                    pq.add(new Pair(dist[adjNode], adjNode));
+                int curr_adj_dist = dist[adj_ele.get(0)];
+                
+                int adj_index = adj_ele.get(0);
+                int adj_dist = adj_ele.get(1);
+                
+                
+                if(dist[curr.first] + adj_dist < dist[adj_index]){
+                    dist[adj_index] =     dist[curr.first] + adj_dist;
+                    pq.add(new Pair(adj_index, dist[adj_index]));
                 }
+                
+                
+                
                 
             }
             
         }
         
-        
         return dist;
+        
     }
 }
 
