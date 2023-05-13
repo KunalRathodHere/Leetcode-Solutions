@@ -61,6 +61,11 @@ class Solution {
             
             Tri curr =pq.remove();
             
+            if( curr.x== n-1 && curr.y == m-1){
+                return curr.d;
+            }
+            
+            
             for(int i = 0; i<4; i++){
                 int new_x = curr.x + xdir[i];
                 int new_y = curr.y + ydir[i];
