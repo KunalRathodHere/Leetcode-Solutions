@@ -33,86 +33,96 @@ public class Main{
 
 // User function Template for Java
 
-class Pair{
-    int first;
-    int second;
+class DisjointSet{
     
-    Pair(int f, int s){
-        first = f;
-        second = s;
+    List<Integer> rank = new ArrayList<>();
+    List<Integer> parent =new ArrayList<>();
+    List<Integer> size = new ArrayList<>();
+    
+    public DisjointSet(int n){
+        for(int i =0; i<n; i++){
+            rank.add(0);
+            parent.add(i);
+            size.add(1);
+        }
     }
+    
+    public int findUPar(int node){
+        if (node == parent.get(node)){
+            return node;
+        }
+        
+        int ulp = findUPar(parent.get(node));
+        parent.set(node, ulp);
+        
+        return parent.get(node);
+    }
+    
+    public void UnionByRank(int u, int v){
+        
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        
+        if(ulp_u == ulp_v){
+            return;
+        }
+        
+        if(rank.get(ulp_u) < rank.get(ulp_v)){
+            parent.set(ulp_u, ulp_v);
+        } else if(rank.get(ulp_u) > rank.get(ulp_v)){
+            parent.set(ulp_v, ulp_u);
+        } else{
+            parent.set(ulp_v, ulp_u);
+            int rankU = rank.get(ulp_u);
+            rank.set(ulp_u, rankU + 1);
+        }
+        
+    }
+    
 }
 
-class Tri{
-    int node;
-    int parent;
-    int wt;
-    
-    Tri(int n, int p, int w){
-        node = n;
-        parent = p;
-        wt = w;
+class Edge implements Comparable<Edge> {
+    int src, dest, weight;
+    Edge(int _src, int _dest, int _wt) {
+        this.src = _src; this.dest = _dest; this.weight = _wt;
     }
-}
+    // Comparator function used for
+    // sorting edgesbased on their weight
+    public int compareTo(Edge compareEdge) {
+        return this.weight - compareEdge.weight;
+    }
+};
+
 
 class Solution{
 	static int spanningTree(int V, int E, int edges[][]){
 	    // Code Here. 
 	    
-	    ArrayList<ArrayList<Pair>> adj = new ArrayList<>();
+	    List<Edge> edgelist = new ArrayList<>();
 	    
-	    for(int i =0; i<V; i++){
-	        adj.add(new ArrayList<Pair>());
+	    for(int i =0; i<edges.length; i++){
+	        edgelist.add(new Edge(edges[i][0], edges[i][1], edges[i][2]));
 	    }
 	    
-	    for(int i=0; i<edges.length; i++){
-	        int u = edges[i][0];
-	        int v = edges[i][1];
-	        int wt = edges[i][2];
-	        adj.get(u).add(new Pair(v, wt));
-	        adj.get(v).add(new Pair(u, wt));
-	        
-	    }
+	    Collections.sort(edgelist);
 	    
-	    int[] vis = new int[V];
-	    PriorityQueue<Tri> pq = new PriorityQueue<Tri>((x,y) -> x.wt - y.wt);
-	    int wt_sum =0;
-	    pq.add(new Tri(0, -1, 0));
+	    DisjointSet dsu = new DisjointSet(V);
 	    
-	    Arrays.fill(vis , 0);
-	    vis[0 ] = 0;
-	    
-	    while(!pq.isEmpty()){
+	    int ans =0;
+	    for(int i=0; i<edgelist.size(); i++){
 	        
-	        Tri curr= pq.remove();
-	        int curr_u = curr.node;
-	        int curr_p = curr.parent;
-	        int curr_wt = curr.wt;
+	        int a = dsu.findUPar(edgelist.get(i).src);
+	        int b = dsu.findUPar(edgelist.get(i).dest);
 	        
-	        if(vis[curr_u] == 1){
-	            continue;
-	        }
-	        
-	        vis[curr_u] = 1;
-	        wt_sum += curr_wt;
-	        
-	       // System.out.println("curr_u " + curr_u);
-	        for(int i =0; i<adj.get(curr_u).size(); i++){
-	            
-	            Pair adj_ele = adj.get(curr_u).get(i);
-	            
-	            int adj_node = adj_ele.first;
-	            int weight = adj_ele.second;
-	            
-	            if(vis[adj_node] != 1){
-	                pq.add(new Tri(adj_node, curr_u, weight));
-	            }
-	            
+	        if(a != b){
+	            dsu.UnionByRank(a, b);
+	            ans += edgelist.get(i).weight;
 	        }
 	        
 	    }
 	    
-	    return wt_sum;
+	    return ans; 
+	    
 	    
 	}
 }
