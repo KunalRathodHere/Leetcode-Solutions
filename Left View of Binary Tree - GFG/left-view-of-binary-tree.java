@@ -122,33 +122,53 @@ class Node
 }*/
 class Tree
 {
-    int max_height = -1;
-    ArrayList<Integer> ans ;
     //Function to return list containing elements of left view of binary tree.
     ArrayList<Integer> leftView(Node root)
     {
       // Your code here
       
-       ans = new ArrayList<>();
-      
-      leftView(root,   0);
-      
-      return ans;
-    }
-    
-    void leftView(Node curr, int height){
+        ArrayList<Integer> arr = new ArrayList<>();
         
-        if(curr != null){
+        
+        Queue<Node> s = new LinkedList<>();
+        
+        s.add(root);
+        s.add(null);
+        Node curr;
+        while(!s.isEmpty()){
             
-            if(max_height < height){
-                ans.add(curr.data);
-                max_height = height;
+            
+            
+            curr = s.peek();
+            
+            if(curr != null){
+            
+            arr.add(curr.data);
+            
+            while(s.peek() != null){
+                
+                if(curr.left != null) s.add(curr.left);
+                if(curr.right != null) s.add(curr.right);
+                
+                s.remove();
+                
+                curr  = s.peek();
+                
             }
             
-            leftView(curr.left,   height + 1);
-            leftView(curr.right,  height + 1);
+            s.add(null);
+            }
+            s.remove();
+            // if(curr != null){
+            //     arr.add(curr.data);
+            //     if(curr.left != null)  s.add(curr.left);
+            //     if(curr.right != null) s.add(curr.right);
+            // }
             
         }
         
+        return arr;
+
+      
     }
 }
