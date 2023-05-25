@@ -33,23 +33,33 @@ class GFG
 
 //User function Template for Java//User function Template for Java
 class Solution{
-    ArrayList<Integer> ans;
+    
+    ArrayList<Integer> ans = new ArrayList<>();
     ArrayList<Integer> subsetSums(ArrayList<Integer> arr, int N){
         // code here
-        ans = new ArrayList<>();
-         function(arr, 0, 0);
+        
+        ans.add(0);
+        function(0, arr, 0);
+        
+        Collections.sort(ans);
+        
         return ans;
+        
+        
     }
     
-    public void  function(ArrayList<Integer> arr, int idx, int sum){
+    int function(int idx, ArrayList<Integer> arr, int currsum){
         
-        if(idx > arr.size()-1)
-        {
-            ans.add(sum);
-            return ;
-        }   
-        function(arr, idx + 1, sum + arr.get(idx));
-        function(arr, idx + 1, sum);
+        if(idx >= arr.size()) return 0;
         
+        // if(idx == arr.size()-1) ans.add(currsum);
+        
+        int a =  function(idx +1, arr, currsum + arr.get(idx));
+        int b =  function(idx+ 1, arr, currsum);
+        
+        
+        ans.add(currsum + arr.get(idx));
+        // System.out.println(currsum);
+        return -1;
     }
 }
