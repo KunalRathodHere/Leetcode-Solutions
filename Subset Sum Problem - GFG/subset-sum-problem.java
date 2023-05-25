@@ -39,29 +39,41 @@ class Solution{
     static Boolean isSubsetSum(int N, int arr[], int sum){
         // code here
         
-        Boolean[][] dp  = new Boolean[N+1][sum +1];
-        for(Boolean[] a: dp){
-            Arrays.fill(a, null);
-        }
-        return function(arr.length -1, arr, sum, dp);
+        int[][] dp = new int[N+1][sum+1];
+        
+        for(int[] temp: dp) Arrays.fill(temp, -1);
+        
+        return function(0, arr, sum, dp);
+      
+        
+        
     }
     
-    static Boolean function(int idx, int arr[], int target, Boolean[][] dp ){
+    static boolean function(int idx, int[] arr, int target, int[][] dp ){
+        
+        if(target == 0) {
+            dp[idx][target] = 1;
+            return true;
+        }
+        if(idx > arr.length -1) return false;
         
         if(target < 0) return false;
-        if(idx == 0)  return (arr[0] == target); 
-        if(idx >= arr.length) return false;
-        if(target == 0) return true;
-        
-        if(dp[idx][target] != null) return dp[idx][target];
-        
-        return  dp[idx][target] = (function(idx -1, arr, target, dp) || function(idx -1, arr, target - arr[idx], dp));
-        
-    }
-    
-    // static Boolean isSubsetSum(int N, int arr[], int sum){
         
         
+        if(dp[idx][target] != -1) {
+            
+            return dp[idx][target] == 1 ? true : false;
+            
+        }
         
-    // }
-}
+        
+        boolean take = function(idx + 1, arr, target - arr[idx], dp);
+        boolean nottake = function(idx+1, arr, target, dp);
+        
+        
+        if(take || nottake) dp[idx][target] = 1;
+        else dp[idx][target]= 0;
+        
+        return take || nottake;
+ }
+} 
