@@ -34,55 +34,51 @@ class solve {
     // Function to determine if graph can be coloured with at most M colours
     // such
     // that no two adjacent vertices of graph are coloured with same colour.
-    
-    int V;
-    
     public boolean graphColoring(boolean graph[][], int m, int n) {
         // Your code here
-        V = n;
-        int[] color = new int[V];
         
+        int[] color = new int[n];
         Arrays.fill(color, 0);
         
-        return function(graph, color, m, 0);
+        return function(0, graph, color, n, m);
+        
         
     }
     
-    public boolean isValid(int idx, int c, int[] color, boolean[][] graph){
+    public boolean isValid(int idx, int c, int[] color, boolean[][] graph,int n){
         
-        for(int i=0; i<V; i++){
-            
-            if(graph[idx][i] && c == color[i]){
-                return false;
-            }
-            
+        for(int i=0; i<n; i++){
+            if(graph[idx][i] && (color[i] == c)) return false;
         }
+        
         return true;
+        
     }
     
-    public boolean function(boolean graph[][], int[] color, int m, int idx){
+    
+    public boolean function(int idx, boolean graph[][], int[] color, int n, int m){
         
-        if(idx == V){
+        if(idx == n){
             return true;
         }
         
-        for(int c = 1; c<=m; c++){
+        for(int c = 1; c <=m; c++){
             
-            if(isValid(idx, c, color, graph)){
-                color[idx] = c;
+            if(isValid( idx, c, color, graph, n)){
                 
-                if(function(graph, color, m, idx+1)){
+                color[idx] = c;
+                boolean temp = function(idx+1, graph, color, n, m);
+                if(temp){
                     return true;
+                } else{
+                    color[idx]=0;
                 }
-                color[idx] = 0;
                 
             }
             
         }
         
         return false;
+        
     }
-    
-    
-    
 }
