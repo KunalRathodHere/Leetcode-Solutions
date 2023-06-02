@@ -36,78 +36,39 @@ class Solution {
     public boolean isCyclic(int V, ArrayList<ArrayList<Integer>> adj) {
         // code here
         
-        int[] indegree = new int[V];
+        int[] vis = new int[V];
+        int[] path_vis = new int[V];
         
-        for(int i =0; i<V; i++){
-            ArrayList<Integer> arr = adj.get(i);
-            for(int j: arr){
-                indegree[j]++;
-            }
+        Arrays.fill(vis, 0);
+        Arrays.fill(path_vis, 0);
+        
+        for(int i=0; i<V; i++){
+            if(vis[i] != 1)
+            dfs(adj, vis, path_vis, i);
         }
         
-        Queue<Integer> q = new LinkedList<Integer>();
-
+        return isCyclic;
         
-        for(int i=0 ;i<V; i++){
-            if(indegree[i] == 0){
-                q.add(i);
-            }
-        }
+    }
+    boolean isCyclic = false;
+    public void dfs(ArrayList<ArrayList<Integer>> adj, int[] vis, int[] path_vis, int node){
         
+        vis[node] = 1;
+        path_vis[node] = 1;
         
-        // int[] ans = new int[V];
-        int k = 0;
-        
-        // int[] vis = new int[V];
-        // Arrays.fill(vis, 0);
-        
-        while(!q.isEmpty()){
-            int a = q.remove();
-            // ans[k ] = a;
-            k++;
+        for(int i=0; i<adj.get(node).size(); i++){
             
-            ArrayList<Integer> adj_arr = adj.get(a);
+            int adj_node = adj.get(node).get(i);
             
-            for(int i : adj_arr){
-                indegree[i]--;
-                if(indegree[i] == 0){
-                    q.add(i);
-                }
-            }
+            if(path_vis[adj_node] == 1 ) isCyclic = true;
+            if(vis[adj_node] == 1) continue;
             
-            // bfs(a, adj, q, indegree, vis);
+            dfs(adj, vis, path_vis, adj_node);
+            
+            
         }
-        
-        if(k == V){
-            return false;
-        } else{
-            return true;
-        }
+        path_vis[node] =  0;
         
     }
     
-    public boolean dfs(int V, ArrayList<ArrayList<Integer>> adj, int[] vis, int[] path_vis){
-        
-        ArrayList<Integer> adj_arr = adj.get(V);
-        vis[V] = 1;
-        path_vis[V] = 1;
-        
-        for(int i =0; i<adj_arr.size(); i++){
-            
-            if(vis[adj_arr.get(i)] == -1){
-                if(dfs(adj_arr.get(i), adj, vis, path_vis) == true){
-                    return true;
-                }
-            }
-            else if(path_vis[adj_arr.get(i)] == 1){
-                // System.out.println("vis " + V + " adj " + adj_arr.get(i));
-                return true;
-            }
-            
-        }
-        
-        path_vis[V] = -1;
-        return false;
-        
-    }
 }
