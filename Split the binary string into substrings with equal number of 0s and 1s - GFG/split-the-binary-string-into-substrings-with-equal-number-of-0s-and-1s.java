@@ -13,22 +13,29 @@ class Solution {
     public static int maxSubStr(String str) {
        //Write your code here
        
-       Stack<Character> st = new Stack<>();
+    //   Stack<Character> st = new Stack<>();
        int cnt = 0;
+       
+       char prev = ' ';
+       int prev_cnt = 0;
        for(int i=0; i<str.length(); i++){
-           if(st.isEmpty()) st.add(str.charAt(i));
-           else if(st.peek() == str.charAt(i)){
-               st.add(str.charAt(i));
+           if(prev_cnt == 0) {
+               prev = str.charAt(i);
+               prev_cnt++;
+           }
+           else if(prev == str.charAt(i)){
+            //   st.add(str.charAt(i));
+            prev_cnt++;
            }
            else{
-               st.pop();
-               if(st.isEmpty()) cnt++;
+               prev_cnt--;
+               if(prev_cnt == 0) cnt++;
            }
            
        }
        
     //   System.out.println(cnt);
-       if(st.size() != 0) return -1; 
+       if(prev_cnt != 0) return -1; 
        else return cnt;
     }
 }
