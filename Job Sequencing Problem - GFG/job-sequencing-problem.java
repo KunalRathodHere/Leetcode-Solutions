@@ -48,44 +48,42 @@ class Solution
     int[] JobScheduling(Job arr[], int n)
     {
         // Your code here
-        ArrayList<Job> jobs = new ArrayList<>();
+        PriorityQueue<Job> pq = new PriorityQueue<>( (a, b) -> b.profit - a.profit );
         
-        for(int i =0; i< arr.length; i++){
-            jobs.add(new Job(i+1, arr[i].deadline, arr[i].profit));
+        for(int i=0; i<n; i++){
+             
+            pq.add(arr[i] );
+            
         }
         
-        
-        Collections.sort(jobs, (a,b) -> b.profit - a.profit);
-        
-        // for(int i =0; i<jobs.size(); i++) System.out.println(jobs.get(i).profit);
-        
-        boolean results[] =  new boolean[n];
-        int job[] = new int[n];
-        int ans[] = new int[2];
-        
-        for(int i =0; i<n; i++){
-            int j = Math.min(n-1, jobs.get(i).deadline -1);
+        boolean[] time = new boolean[n];
+        Arrays.fill(time, false);
+        int job_done = 0;
+        int profit = 0;
+        while(!pq.isEmpty()){
             
-            for(; j>=0; j--){
-                if(results[j] == false){
-                    results[j] = true;
-                    job[j] = jobs.get(i).id;
+            Job curr = pq.remove();
+            
+            int time_limit = curr.deadline;
+            
+            while(time_limit>0){
+                if(time[time_limit-1] == true) time_limit--;
+                else if(time[time_limit-1] == false) {
                     
-                    ans[0] ++;
-                    ans[1] += jobs.get(i).profit;
+                    // System.out.println(time_limit + " " + curr.id);
+                    time[time_limit-1] = true;
+                    job_done += 1;
+                    profit+= curr.profit;
                     break;
                 }
             }
         }
         
+        return new int[]{job_done, profit};
         
         
-        return ans;
     }
 }
-
-
-
 
 /*
 class Job {
