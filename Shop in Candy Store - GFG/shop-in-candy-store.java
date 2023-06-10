@@ -35,37 +35,32 @@ class GFG
 class Solution{
     static ArrayList<Integer> candyStore(int candies[],int N,int K){
         // code here
-        
         Arrays.sort(candies);
         
-        int start =0;
-        int end = N-1;
-        
-        int min_amount =0 ;
-        
-        while(start <= end){
+        int i =0,  j = N-1;
+        int min_amount = 0;
+        while(i <= j){
             
-            min_amount += candies[start];
-            start++;
-            end-=K;
+            min_amount += candies[i];
+            i++;
+            j-=K;
             
         }
         
-        int max_amound =0;
+        i = 0; j = N-1;
+        int max_amount =0;
         
-        int start1 = 0;
-        int end1 = N-1;
-        while(start1 <= end1){
-            
-            max_amound += candies[end1];
-            start1+=K;
-            end1--;
+        while(i <= j){
+            max_amount += candies[j];
+            i+=K;
+            j--;
         }
         
         ArrayList<Integer> arr = new ArrayList<>();
         arr.add(min_amount);
-        arr.add(max_amound);
+        arr.add(max_amount);
         
         return arr;
+        
     }
 }
