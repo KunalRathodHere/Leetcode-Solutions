@@ -26,32 +26,32 @@ class Solution{
     static int minimumNumberOfSwaps(String S){
         // code here
         
-        int left = 0;
-        int right = 0;
-        int swap =0;
-        int imm = 0;
+        Stack<Character> st =new Stack<>();
         
-        for(int i =0; i<S.length(); i++){
+        st.add(S.charAt(0));
+        int cnt = 0;
+        
+        
+        for(int i = 1; i<S.length(); i++){
             
-            char curr = S.charAt(i);
+            if(st.isEmpty()) st.add(S.charAt(i));
             
-            if(curr == '['){
-                left++;
-                if(imm> 0){
-                    swap+= imm;
-                    imm--;
-                }
-                
+            else if(st.peek() == '[' && S.charAt(i) == ']'){
+                 st.pop();
             }
-            else{
-                right++;
-                
-                imm = (right - left);
+            else if(st.peek() == '[' && S.charAt(i) == '['){
+                st.add('[');
+            }
+            else if(st.peek() == ']' && S.charAt(i) == '['){
+                cnt += st.size();
+                st.pop();
+            }
+            else if(st.peek() == ']' && S.charAt(i) == ']'){
+                st.add(']');
             }
             
         }
-        
-        return swap;
+        return cnt;
         
     }
 }
