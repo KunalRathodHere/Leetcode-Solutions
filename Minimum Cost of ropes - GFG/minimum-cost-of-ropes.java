@@ -66,23 +66,31 @@ class Solution
     long minCost(long arr[], int n) 
     {
         // your code here
+        PriorityQueue<Long> st = new PriorityQueue<>( );
         
-        PriorityQueue<Long> pq = new PriorityQueue<>();
-        
-        for(int i =0; i<n; i++){
-            pq.add(arr[i]);
+        for(int i=0; i<n; i++){
+            st.add(arr[i]);
         }
         
-        long total = 0;
-        while(pq.size()>1){
-            long first = pq.remove();
-            long sec = pq.remove();
-            long sum = first + sec;
-            total += sum;
-            pq.add(sum);
+        long sum = 0;
+        
+        while(st.size()> 1){
+            
+            
+            
+            long first = st.remove();
+            long sec = st.remove();
+            // System.out.println(first + " " + sec);
+            
+            sum += (first + sec);
+            
+            st.add(first + sec);
+            
         }
         
-        return total; 
+        // if(!st.isEmpty()) sum += st.remove();
+
+        return sum;
         
     }
 }
