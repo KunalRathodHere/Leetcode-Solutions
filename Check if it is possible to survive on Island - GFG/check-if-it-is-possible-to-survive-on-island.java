@@ -30,19 +30,29 @@ class Solution{
     static int minimumDays(int S, int N, int M){
         // code here
         
-        if ( ((N * 6) < (M * 7) && S > 6) || M > N)
-            return -1;
-  
-        else {
-  
-            // If we can survive then we can
-            // buy ceil(A/N) times where A is
-            // total units of food required.
-            int days = (M * S) / N;
-  
-            if (((M * S) % N) != 0)
-                days++;
-        return days;
+        if(N < M) return -1;
+        
+        if(N == M) {
+            if(S >= 7) return -1;
+            else{
+                return S;
+            }
         }
+        
+        else{
+            int sundays = S / 7;
+            
+            int food_can_bought = (S - sundays) * N;
+            int food_required = S * M;
+            
+            if(food_can_bought < food_required) return -1;
+            
+            int temp = S * M;
+            
+            if(temp % N == 0) return temp / N;
+            else return ((temp / N) + 1);
+            
+        }
+        
     }
 }
