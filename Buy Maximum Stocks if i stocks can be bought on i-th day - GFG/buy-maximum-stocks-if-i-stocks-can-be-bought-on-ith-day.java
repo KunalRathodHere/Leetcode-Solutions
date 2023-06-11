@@ -32,47 +32,48 @@ class GFG {
 // } Driver Code Ends
 
 
-class pair{
-    int p;
-    int day;
-    
-    pair(int pp, int dd){
-        p = pp;
-        day = dd;
-    }
-}
-
-
-class sortpair implements Comparator<pair>{
-    public int compare(pair a, pair b){
-        return a.p - b.p;
-    }
-}
-
 class Solution {
     public static int buyMaximumProducts(int n, int k, int[] price) {
         // code here
         
-        ArrayList<pair> list= new ArrayList<>();
+        PriorityQueue<Stock> pq = new PriorityQueue<>( (a, b) -> a.price - b.price );
         
-        for(int i =0; i<n; i++){
-            list.add(new pair(price[i], i+1));
+        for(int i=0; i<n; i++){
+            pq.add(new Stock(price[i], i+1));    
         }
         
-        Collections.sort(list, new sortpair());
         
         int ans =0;
-        
-        for(int i =0; i<list.size(); i++){
+        while(!pq.isEmpty() && k>0){
             
-            int stocks = Math.min(list.get(i).day, k/ list.get(i).p);
-            ans += stocks;
+            Stock curr = pq.remove();
             
-            k -= stocks * list.get(i).p;
-            
+            if(curr.price * curr.num <= k){
+                ans += curr.num;
+                k -= curr.price * curr.num;
+            }
+            else{
+                int max_buy = k / curr.price;
+                ans += max_buy;
+                
+                k-= curr.price * max_buy;
+                
+            }
         }
         
         return ans;
+        
     }
 }
         
+class Stock{
+    
+    int price;
+    int num;
+    
+    Stock(int p, int n){
+        price = p;
+        num = n;
+    }
+    
+}
