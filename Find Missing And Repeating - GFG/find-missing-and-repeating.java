@@ -33,33 +33,42 @@ class Solve {
     int[] findTwoElement(int arr[], int n) {
         // code here
         
-        long sum = 0;
-            
-        int repeat = -1;
+        int[] map = new int[n+1];
+        Arrays.fill(map, 1);
+        
+        int repeated = 0;
+        
         for(int i=0; i<n; i++){
             
-            int idx = Math.abs(arr[i])-1;
+            int curr = arr[i];
             
-            // System.out.println(idx) ;
-            if(arr[idx] < 0){
-                repeat = idx;
-                
-            } else
+            if(map[curr] > 0){
+                map[curr] =  map[curr] * -1;
+            }
+            else if(map[curr] < 0){
+                // System.out.println(curr);
+                repeated = curr;
+            }
             
-            arr[idx] *= -1;
         }
         
-        int missing  = -1;
-        for(int i =0; i<n; i++){
-            if(arr[i] > 0){
-                missing = i+1;
+        // for(int i=0; i<n+1; i++){
+        //     System.out.println("i = " + i + " " + map[i]);
+        // }
+        
+        int missing = 0;
+        for(int i = 1; i<n+1; i++){
+            if(map[i] > 0){
+                missing = i;
+                break;
             }
         }
         
         
+        int[] ans = new int[2];
+        ans[0] = repeated;
+        ans[1] = missing;
         
-        int[] ans = {repeat+1, missing};
         return ans;
-        
     }
 }
