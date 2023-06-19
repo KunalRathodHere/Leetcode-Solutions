@@ -173,44 +173,53 @@ class Clone {
     Node copyList(Node head) {
         // your code here
         
-        Node h = new Node(head.data);
-        
         Node curr = head;
-        Node c = h;
-        
-        HashMap<Node, Node> map = new HashMap<>();
-        map.put(head, h);
-        
-        while(curr.next != null){
+        while(curr != null){
             
+            Node next = curr.next;
             
+            Node copy_curr = new Node(curr.data);
+            copy_curr.next = curr.next;
+            curr.next = copy_curr;
+            curr = next;
             
-            c.next = new Node(curr.next.data);
-            c = c.next;
-            curr = curr.next;
-            map.put(curr, c);
-
         }
         
-
+         curr = head;
+        
+        while(curr != null){
+            
+            // Node next = curr.next.next; 
+            // Node copy_curr = curr.next;
+            
+            if(curr.arb == null) curr.next.arb = null;
+            else
+                curr.next.arb = curr.arb.next;
+            
+            curr = curr.next.next; 
+        }
+        
+        Node dummyhead = new Node(-1);
+        
+        Node c = dummyhead;
+        
         curr = head;
         while(curr != null){
-
-            if(curr.arb == null){
-                map.get(curr).arb = null;
-            } 
-            else{
-                Node rand = curr.arb;
-                Node copy_curr = map.get(curr);
-                Node copy_rand = map.get(rand);
-                
-                copy_curr.arb = copy_rand;
-                
-            }
-            curr = curr.next;
+            
+            Node copy_curr = curr.next;
+            c.next = copy_curr;
+            
+            Node next = curr.next.next;
+            curr.next  = curr.next.next;
+            
+            curr = next;
+            c = c.next;
         }
+        // curr.next = null;
+        c.next = null;
         
-        return h;
+        return dummyhead.next;
+        
     }
 }
 
