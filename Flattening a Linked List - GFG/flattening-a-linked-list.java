@@ -119,28 +119,39 @@ class Node
     the flattened linked list. */
 class GfG
 {
+    
+    Node merge(Node root, Node node){
+        
+        if(node == null) return root;
+        if(root == null) return node;
+        
+        Node ans;
+        
+        if(root.data >= node.data){
+            ans = node;
+            ans.bottom = merge(root, node.bottom);
+        } else{
+            ans = root;
+            ans.bottom = merge(root.bottom, node);
+        }
+        
+        ans.next = null;
+        
+        return ans;
+        
+    }
+    
     Node flatten(Node root)
     {
 	// Your code here
 	
-	    PriorityQueue<Node> pq = new PriorityQueue<>( (a, b) -> a.data - b.data );
+	    if(root == null || root.next == null) return root;
 	    
-	    while(root != null){
-	        pq.add(root);
-	        root = root.next;
-	    }
+	    root.next = flatten(root.next);
 	    
-	    Node dummyhead = new Node(-1);
-	    Node curr = dummyhead;
+	    Node ans = merge(root, root.next);
 	    
-	    while(!pq.isEmpty()){
-	        Node newn = pq.remove();
-	        curr.bottom = newn;
-	        if(newn.bottom != null) pq.add(newn.bottom);
-	        curr = curr.bottom;
-	    }
-	    
-	    return dummyhead.bottom;
-	
+	    return ans;
+	   
     }
 }
