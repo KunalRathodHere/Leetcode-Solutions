@@ -33,10 +33,32 @@ class Solution{
     {
         // code here
         int[][] dp = new int[N][N];
-        for(int[] temp: dp) Arrays.fill(temp, -1);
         
-        return mulitply(1, N-1, arr, dp);
+        for(int i=1; i<N; i++){
+            dp[i][i] = 0;
+        }
         
+        for(int i = N-1; i>= 1; i--){
+            
+            for(int j = i +1; j<N; j++){
+                
+                int min = (int) 1e9;
+                
+                for(int k = i; k<= j-1; k++){
+                    
+                    int a = dp[i][k] + dp[k+1][j] 
+                    + arr[i-1]* arr[k] * arr[j];
+                    
+                    min = Math.min(a, min);
+                }
+                
+                dp[i][j] = min;
+                
+            }
+            
+        }
+        
+        return dp[1][N-1];
     }
     
     int mulitply(int start, int end, int[] arr, int[][] dp ) {
