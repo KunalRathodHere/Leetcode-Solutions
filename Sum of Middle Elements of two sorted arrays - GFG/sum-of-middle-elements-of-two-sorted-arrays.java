@@ -36,37 +36,38 @@ class Solution {
     int findMidSum(int[] ar1, int[] ar2, int n) {
         // code here
         
-        int i=0; int j =0;
-        int count = 0;
-        int m1 = -1, m2 = -1;
+        int low = 0;
+        int high = n;
         
-        for(count =0; count <= n; count++){
+        int cut1, cut2;
+        int l1, l2, r1, r2;
+        
+        while(low <= high){
             
-            if(i == n){
-                m1 = m2;
-                m2 = ar2[0];
-                break;
-            } else if(j == n){
-                m1 = m2;
-                m1 = ar1[0];
-                break;
-            }
+             cut1 = (low + high) /2;
+             cut2 = n - cut1;
             
-            if(ar1[i] <= ar2[j]){
-                m1 = m2;
-                m2 = ar1[i];
-                i++;
+            l1 = (cut1 == 0) ? Integer.MIN_VALUE : ar1[cut1-1];
+            l2 = (cut2 == 0) ? Integer.MIN_VALUE : ar2[cut2 - 1];
+            r1 = (cut1 == n) ? Integer.MAX_VALUE : ar1[cut1];
+            r2 = (cut2 == n) ? Integer.MAX_VALUE : ar2[cut2];
+            
+            if(l1 > r2){
                 
-            } 
-            else if(ar1[i] > ar2[j]){
-                m1 = m2;
-                m2 = ar2[j];
-                j++;
+                high = cut1 -1;
+                
+                
+            } else if(l2 > r1){
+                low = cut1 + 1;
+            } else{
+                
+                return (Math.max(l1, l2) + Math.min(r1, r2));
+                
             }
+            
             
         }
         
-        return (m1 + m2);
-        
+        return 0;
     }
 }
