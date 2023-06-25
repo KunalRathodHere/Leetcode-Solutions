@@ -10,23 +10,27 @@ class Solution
     static int missingNumber(int arr[], int size)
     {
         // Your code here
-        HashSet<Integer> set = new HashSet<>();
+        int N = arr.length;
         
         for(int i=0; i<arr.length; i++){
-            set.add(arr[i]);
-        }
-        
-        for(int i=1; i<arr.length+1; i++){
             
-            if(set.contains(i)){
-                continue;
-            } else{
-                return i;
+            
+            while(arr[i] >= 1 && arr[i] <= N && arr[i] != arr[arr[i] - 1]){
+                
+                int temp = arr[arr[i] - 1] ;
+                arr[arr[i] -1] = arr[i];
+                arr[i] = temp;
+                
             }
             
         }
         
-        return arr.length + 1;
+        for(int i=0; i<N; i++){
+            if(arr[i] != i + 1) return i+1;
+        }
+        
+        return N+1;
+        
     }
 }
 
