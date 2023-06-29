@@ -37,51 +37,53 @@ class Heap_Sort
 
 class Solution
 {
-    
-    int left(int i){
-        return 2 * i + 1;
-    }
-    
-    int right(int i){
-        return 2 * i + 2;
-    }
-    
-    
-    
     //Function to build a Heap from array.
     void buildHeap(int arr[], int n)
     {
         // Your code here
-        int range = (n/2) -1;
-        
-        for(int i =range; i>=0; i--){
+        int limit = (n / 2) - 1;
+        for(int i=limit; i >= 0; i--){
+            
             heapify(arr, n, i);
+            
         }
+        
     }
  
     //Heapify function to maintain heap property.
     void heapify(int arr[], int n, int i)
     {
         // Your code here
-        int left = left(i);
-        int right = right(i);
         
-        int max = i;
+        int left_idx = 2 * i + 1;
+        int right_idx = 2 * i + 2;
         
-        if(left < n && arr[left] > arr[max]){
-            max = left;
-        }
-        if(right < n && arr[right] > arr[max]){
-            max = right;
+        if(left_idx > n && right_idx > n){
+            return;
         }
         
-        if(max != i){
-            int temp = arr[i];
-            arr[i]= arr[max];
-            arr[max] = temp;
-            heapify(arr, n, max);
+        int max = arr[i];
+        int max_idx = i;
+        
+        if(left_idx < n && arr[left_idx] > max){
+            max_idx = left_idx;
+            max = arr[left_idx];
         }
         
+        if(right_idx < n && arr[right_idx] > max ){
+            max = arr[right_idx];
+            max_idx = right_idx;
+        }
+        
+        if(max_idx != i){
+            
+            int temp = arr[max_idx];
+            arr[max_idx] = arr[i];
+            arr[i] = temp;
+            
+            heapify(arr, n, max_idx);
+        }
+        return;
         
     }
     
@@ -91,16 +93,18 @@ class Solution
         //code here
         buildHeap(arr, n);
         
-        int temp = n;
-        
-        while(temp>1){
-            int max = arr[0];
-            int end = temp -1;
-            arr[0] = arr[end];
-            arr[end]= max;
-            temp--;
-            heapify(arr, temp, 0);
+        for(int i = n-1; i>0; i--){
+            
+            int temp = arr[i];
+            arr[i] = arr[0];
+            arr[0] = temp;
+            
+            heapify(arr, i, 0);
+            
         }
+        
+        return;
+        
         
     }
  }
