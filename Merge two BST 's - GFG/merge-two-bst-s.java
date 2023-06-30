@@ -126,46 +126,41 @@ class Solution
     public List<Integer> merge(Node root1,Node root2)
     {
         // Write your code here
-        
-        Queue<Integer> q1 = new LinkedList<>();
-        Queue<Integer> q2 = new LinkedList<>();
-        
-        fillQueue(root1, q1);
-        fillQueue(root2, q2);
-        
         List<Integer> ans = new ArrayList<>();
         
-        while(!q1.isEmpty() && !q2.isEmpty() ){
+        Stack<Node> st1 = new Stack<>();
+        Stack<Node> st2 = new Stack<>();
+        // st1.add(root1);
+        // st2.add(root2);
+        
+        while(root1 != null || root2 != null || !st1.isEmpty() || !st2.isEmpty()){
             
-            if(q1.peek() > q2.peek()){
-                ans.add(q2.remove());
-            }else{
-                ans.add(q1.remove());
+            while(root1 != null){
+                st1.add(root1);
+                root1 = root1.left;
             }
             
+            while(root2 != null){
+                st2.add(root2);
+                root2 = root2.left;
+            }
+            
+            if(st2.isEmpty() || (!st1.isEmpty() && st1.peek().data <= st2.peek().data))
+            {
+                root1 = st1.pop();
+                ans.add(root1.data);
+                root1 = root1.right;
+            } else{
+                root2 = st2.pop();{
+                    ans.add(root2.data);
+                    root2 = root2.right;
+                }
+            }
+            
+            
         }
-        
-        while(!q1.isEmpty()){
-            ans.add(q1.remove());
-        }
-        
-        while(!q2.isEmpty()) ans.add(q2.remove());
-        
         return ans;
         
         
     }
-    
-    public void fillQueue(Node root, Queue<Integer> q){
-        
-        if(root == null) return;
-        
-        fillQueue(root.left, q);
-        
-        q.add(root.data);
-        
-        fillQueue(root.right, q);
-        
-    }
-    
 }
