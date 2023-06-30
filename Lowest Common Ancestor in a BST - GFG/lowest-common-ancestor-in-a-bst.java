@@ -120,42 +120,23 @@ class GfG {
 class BST
 {   
     //Function to find the lowest common ancestor in a BST. 
-	Node ans = null;
 	Node LCA(Node root, int n1, int n2)
 	{
-        // code here.    
+        // code here.   
         
-        find(root, n1, n2);
-        
-        return ans;
-        
-    }
-    
-    boolean find(Node root, int n1, int n2){
-        
-        if(root == null) return false;
-        
-        boolean curr = false;
-        
-        if(root.data == n1 || root.data == n2) {
-            curr = true;
-        }
-        
-        boolean left = find(root.left, n1, n2);
-        boolean right = find(root.right, n1, n2);
-        
-        if(left == true && right == true && ans == null){
-            ans = root;
-            // return;
+        while(root != null){
+            
+            if(n1 > root.data && n2 > root.data){
+                root = root.right;
+            } else if(n1 < root.data && n2 < root.data){
+                root = root.left;
+            } else{
+                break;
+            }
             
         }
-        else if((left && curr) || (right && curr)  ){
-            ans = root;
-        }
         
-        
-        return (left || right || curr); 
-        
+        return root;
     }
     
 }
