@@ -85,97 +85,77 @@ class GFG {
 class Solution
 {
     
-    public int[] check(String a, String b){
+    public int[] getIndex(String a, String b){
         
-        int n = a.length();
-        int m = b.length();
-        int i =0; 
-        
-        int[] ans = new int[2];
-        while(i<n && i<m){
+        for(int i=0; i<Math.min(a.length(), b.length()); i++  )
+        {
             
             if(a.charAt(i) != b.charAt(i)){
+                
+                int[] ans = new int[2];
                 ans[0] = a.charAt(i) - 'a';
                 ans[1] = b.charAt(i) - 'a';
                 return ans;
             }
-            else{
-                i++;
-            }
             
         }
         
-        return new int[0];
+        int[] ans = new int[0];
+        return ans;
         
     }
     
     public String findOrder(String [] dict, int N, int K)
     {
         // Write your code here
+         ArrayList<ArrayList<Integer>> adj =new ArrayList<>();
+         
+         for(int i=0; i<K; i++) adj.add(new ArrayList<>());
+         
+         int[] in_degree = new int[K];
+         Arrays.fill(in_degree, 0);
+         
+         for(int i=0; i<N-1; i++){
+             
+             int[] idxs = getIndex(dict[i], dict[i+1]);
+             if(idxs.length == 0){
+                 continue;
+             } else{
+                 
+                 adj.get(idxs[0]).add(idxs[1]);
+                 in_degree[idxs[1]]++;
+                 
+             }
+         }
+         
+         String ans = "";
+         Queue<Integer> q =new LinkedList<>();
+         
+         for(int i=0; i<K; i++){
+             if(in_degree[i] == 0){
+                 q.add(i);
+             }
+         }
+         
+         while(!q.isEmpty()){
+             int curr = q.remove();
+             
+             ans += (char) (curr + 'a');
+             
+             ArrayList<Integer> adjcent = adj.get(curr);
+             
+             for(int i=0; i< adjcent.size(); i++){
+                 
+                 in_degree[adjcent.get(i)]--;
+                 
+                 if(in_degree[adjcent.get(i)] == 0){
+                     q.add(adjcent.get(i));
+                 }
+                 
+             }
+         }
         
-        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
-        int[] indeg = new int[K];
-        
-        for(int i =0; i<K; i++){
-            adj.add(new ArrayList<Integer>());
-        }
-        
-        for(int i =0; i<N-1; i++){
-            
-            int[] seq = check(dict[i], dict[i+1]);
-            
-            if(seq.length == 0){
-                continue;
-            }
-            
-            adj.get(seq[0]).add(seq[1]);
-            
-            indeg[seq[1]]++;
-            
-        }
-        
-        Queue<Integer> q = new LinkedList<Integer>();
-        
-        for(int i =0; i<K; i++){
-            
-            if(indeg[i] == 0){
-                q.add(i);
-            }
-            
-        }
-        
-        Stack<Integer> s = new Stack<Integer>();
-        
-        
-        while(!q.isEmpty()){
-            
-            int curr = q.remove();
-            s.push(curr);
-            
-            ArrayList<Integer> arr = adj.get(curr);
-            
-            for(int i: arr){
-                indeg[i]--;
-                if(indeg[i] == 0){
-                    q.add(i);
-                }
-            }
-            
-        }
-    
-        // int[] ans = new int[K];
-        String ans = "";
-        int i =0; 
-        while(!s.isEmpty()){
-            int c = s.pop();
-            
-            ans =  Character.toString(c + 'a') + ans;
-            
-            i++;
-        }
-        
-        // System.out.println(ans);
         return ans;
-        // return ans;
+        
     }
 }
