@@ -87,35 +87,19 @@ class GFG
     public static boolean isDeadEnd(Node root)
     {
         //Add your code here.
-        HashSet<Integer> set = new HashSet<>();
+        return find(root, 1, Integer.MAX_VALUE);
         
-        Queue<Node> q = new LinkedList<>();
-        
-        q.add(root);
-        
-        while(!q.isEmpty()){
-            
-            int size = q.size();
-            while(size-->0){
-                
-                Node curr = q.remove();
-                set.add(curr.data);
-                if(curr.data == 1 && set.contains(2)){
-                    return true;
-                }
-                if(set.contains(curr.data -1) && set.contains(curr.data + 1)){
-                    return true;
-                }
-                
-                if(curr.left != null) q.add(curr.left);
-                if(curr.right != null) q.add(curr.right);
-                
-                
-            }
-            
-        }
-        
-        return false;
         
     }
+    public static boolean find(Node root, int min, int max){
+        
+        if(root == null) return false;
+        
+        if(min == max) return true;
+        
+        return (find(root.left, min, root.data -1) || 
+        find(root.right, root.data+1, max));
+        
+    }
+    
 }
