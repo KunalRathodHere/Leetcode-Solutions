@@ -71,29 +71,12 @@ class Solution
     Node reverseList(Node head)
     {
         // code here
-        Node new_head = head;
-        while(new_head.next != null) new_head = new_head.next;
-        
-        Node nhead = helper(head);
-        
-        nhead.next = null;
-        head = new_head;
-        return head;
-        
-    }
-    
-    Node helper(Node head){
-        
-        if(head.next == null) return head;
-        
-        Node curr = head;
-        
-        Node rest = helper(curr.next);
-        
-        rest.next = curr;
-        
-        return curr;
-    
+        if(head == null) return null;
+        else{
+            Node printfirst = reverseList(head.next);
+            System.out.print(head.data + " ");
+            return printfirst;
+        }
         
     }
 }
